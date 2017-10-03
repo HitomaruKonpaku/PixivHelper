@@ -41,6 +41,7 @@
             ],
             "js": [
                 "js/jquery.min.js",
+                "js/URI.min.js",
                 "js/_main.js"
             ]
         }
