@@ -31,19 +31,18 @@
         "downloads",
         "declarativeContent"
     ],
-    "content_scripts": [
-        {
-            "matches": [
-                "*://www.pixiv.net/*"
-            ],
-            "css": [
-                "css/_main.css"
-            ],
-            "js": [
-                "js/jquery.min.js",
-                "js/URI.min.js",
-                "js/_main.js"
-            ]
-        }
-    ]
+    "content_scripts": [{
+        "matches": [
+            "*://www.pixiv.net/*"
+        ],
+        "css": [
+            "css/_main.css"
+        ],
+        "js": [
+            "js/jquery.min.js",
+            "js/URI.min.js",
+            "js/download.min.js",
+            "js/_main.js"
+        ]
+    }]
 }
