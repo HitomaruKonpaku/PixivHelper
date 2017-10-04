@@ -18,11 +18,10 @@ chrome.runtime.onInstalled.addListener(function() {
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     console.log(message)
-    console.log(sender)
+        // console.log(sender)
 
     if (!message.action) return
-    var links = message.links
-    console.log(links)
+    let links = message.links
 
     if (message.action == 'openTabs') {
         links.forEach(link => {
@@ -33,7 +32,10 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
     if (message.action == 'download') {
         links.forEach(link => {
-            console.log(link.toString())
+            downloadPromise(link)
+                .then(() => {
+
+                })
         })
     }
 })

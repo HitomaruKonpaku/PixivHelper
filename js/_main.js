@@ -1,13 +1,12 @@
 console.info('PixivHelper running...')
 
 $(document).ready(() => {
-    var uri = URI(window.location)
-    var qs = uri.search(true)
-    var p = phPan()
-        .append(phTitle)
+    let uri = URI(window.location)
+    let qs = uri.search(true)
+    let p = phPan().append(phTitle)
 
     if (uri.path().indexOf('member_illust') != -1) {
-        var bp = phButtonPan()
+        let bp = phButtonPan()
 
         if (qs.id) {
             bp.append(phButtonOpenWorks)
@@ -53,8 +52,8 @@ function phButtonOpenWorks() {
         .addClass('follow-button js-follow-button')
         .text('Open works')
         .click(() => {
-            var action = 'openTabs'
-            var links = []
+            let action = 'openTabs'
+            let links = []
             $($('.image-item').get().reverse())
                 .each((index, item) => {
                     let arr = $('a', $(item))
@@ -67,16 +66,29 @@ function phButtonOpenWorks() {
 }
 
 function downloadWorker() {
-    var action = 'download'
-    var links = []
+    let action = 'download'
+    let links = []
 
     if ($('.original-image').length != 0) {
         let src = $('.original-image').attr('data-src')
-        let uri = URI(src)
-        links.push(uri)
+        links.push(src)
         chrome.runtime.sendMessage({ action, links })
     } else if ($('._work.multiple').length != 0) {
-
+        let url = $('._work.multiple').attr('href')
+        $.get(url, data => {
+            let total = $('.item-container', data).length
+            $('.item-container', data).each(function(index) {
+                let url = $(this).find('a').first().attr('href')
+                $.get(url, function(data) {
+                    let img = $(data).filter('img')[0]
+                    let src = $(img).attr('src')
+                    links.push(src)
+                    if (links.length == total) {
+                        chrome.runtime.sendMessage({ action, links })
+                    }
+                })
+            })
+        })
     } else {
         alert('Not supported!')
     }

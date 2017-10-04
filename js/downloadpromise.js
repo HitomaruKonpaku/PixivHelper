@@ -7,7 +7,7 @@ function downloadPromise(url, fileName) {
     }
 
     return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest
+        let xhr = new XMLHttpRequest
         xhr.addEventListener('load', resolve)
         xhr.addEventListener('error', reject)
         xhr.open('GET', url, true)

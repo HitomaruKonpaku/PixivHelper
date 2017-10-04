@@ -21,19 +21,23 @@
     },
     "background": {
         "scripts": [
-            "js/background.js"
+            "js/background.js",
+            "js/download.min.js",
+            "js/downloadpromise.js",
+            "js/URI.min.js"
         ],
         "persistent": false
     },
     "permissions": [
         "activeTab",
         "tabs",
-        "downloads",
-        "declarativeContent"
+        "declarativeContent",
+        "*://*.pixiv.net/*",
+        "*://*.pximg.net/*"
     ],
     "content_scripts": [{
         "matches": [
-            "*://www.pixiv.net/*"
+            "*://*.pixiv.net/*"
         ],
         "css": [
             "css/_main.css"
