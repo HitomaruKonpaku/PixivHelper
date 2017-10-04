@@ -40,7 +40,8 @@
             "*://*.pixiv.net/*"
         ],
         "css": [
-            "css/_main.css"
+            "css/_main.css",
+            "css/loader.css"
         ],
         "js": [
             "js/jquery.min.js",

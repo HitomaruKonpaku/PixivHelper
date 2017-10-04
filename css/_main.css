@@ -9,3 +9,8 @@
 .ph-pan ._follow-buttons .follow-button {
     margin-top: 5px;
 }
+
+.ph-pan .cssload-squeeze {
+    margin-top: 6px;
+    padding-left: 14px;
+}

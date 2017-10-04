@@ -31,11 +31,20 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     }
 
     if (message.action == 'download') {
+        let total = links.length,
+            count = 0
+
         links.forEach(link => {
             downloadPromise(link)
+                .then(() => { count++ })
+                .catch(() => { count++ })
                 .then(() => {
-
+                    if (count == total) {
+                        sendResponse({ status: 'done' })
+                    }
                 })
         })
+
+        return true
     }
 })

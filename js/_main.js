@@ -12,6 +12,7 @@ $(document).ready(() => {
             bp.append(phButtonOpenWorks)
         } else if (qs.mode && qs.illust_id) {
             bp.append(phButtonDownload)
+            bp.append(phDownloadProgress().hide())
         }
 
         p
@@ -37,12 +38,22 @@ function phButtonPan() {
         .addClass('_follow-buttons')
 }
 
+function phDownloadProgress() {
+    return $('<div/>')
+        .attr('id', 'phi-download-progress')
+        .addClass('cssload-squeeze')
+        .append($('<span/>')).append($('<span/>'))
+        .append($('<span/>')).append($('<span/>'))
+        .append($('<span/>'))
+}
+
 function phButtonDownload() {
     return $('<div/>')
         .attr('id', 'phi-download')
         .addClass('follow-button js-follow-button')
         .text('Download')
         .click(() => {
+            processingDownload()
             downloadWorker()
         })
 }
@@ -72,7 +83,7 @@ function downloadWorker() {
     if ($('.original-image').length != 0) {
         let src = $('.original-image').attr('data-src')
         links.push(src)
-        chrome.runtime.sendMessage({ action, links })
+        sendLinksToBackgroundProcess(action, links)
     } else if ($('._work.multiple').length != 0) {
         let url = $('._work.multiple').attr('href')
         $.get(url, data => {
@@ -84,12 +95,28 @@ function downloadWorker() {
                     let src = $(img).attr('src')
                     links.push(src)
                     if (links.length == total) {
-                        chrome.runtime.sendMessage({ action, links })
+                        sendLinksToBackgroundProcess(action, links)
                     }
                 })
             })
         })
     } else {
+        processingDownload()
         alert('Not supported!')
     }
+}
+
+function sendLinksToBackgroundProcess(action, links) {
+    chrome.runtime.sendMessage({ action, links }, function(res) {
+        console.log(res)
+        let status = res.status
+        if (status == 'done') {
+            processingDownload()
+        }
+    })
+}
+
+function processingDownload() {
+    $('#phi-download').toggle()
+    $('#phi-download-progress').toggle()
 }
