@@ -44,7 +44,7 @@ function phButtonDownload() {
         .addClass('follow-button js-follow-button')
         .text('Download')
         .click(() => {
-            // $('#phi-download').hide()
+            downloadWorker()
         })
 }
 
@@ -53,6 +53,31 @@ function phButtonOpenWorks() {
         .addClass('follow-button js-follow-button')
         .text('Open works')
         .click(() => {
-
+            var action = 'openTabs'
+            var links = []
+            $($('.image-item').get().reverse())
+                .each((index, item) => {
+                    let arr = $('a', $(item))
+                    let a = $(arr)[arr.length - 1]
+                    let href = $(a).attr('href')
+                    links.push(href)
+                })
+            chrome.runtime.sendMessage({ action, links })
         })
+}
+
+function downloadWorker() {
+    var action = 'download'
+    var links = []
+
+    if ($('.original-image').length != 0) {
+        let src = $('.original-image').attr('data-src')
+        let uri = URI(src)
+        links.push(uri)
+        chrome.runtime.sendMessage({ action, links })
+    } else if ($('._work.multiple').length != 0) {
+
+    } else {
+        alert('Not supported!')
+    }
 }
