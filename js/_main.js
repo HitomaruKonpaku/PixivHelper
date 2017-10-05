@@ -2,24 +2,24 @@ console.info('PixivHelper running...')
 
 $(document).ready(() => {
     let uri = URI(window.location),
-        query = uri.search(true),
+        query = uri.search(true)
 
-        if (uri.path().indexOf('member_illust') != -1) {
-            let panel = phPan().append(phTitle),
-                bp = phButtonPan()
+    if (uri.path().indexOf('member_illust') != -1) {
+        let panel = phPan().append(phTitle),
+            bp = phButtonPan()
 
-            if (query.id) {
-                bp.append(phButtonOpenWorks)
-            } else if (query.mode && query.illust_id) {
-                bp.append(phButtonDownload)
-                bp.append(phDownloadProgress().hide())
-            }
-
-            panel
-                .append(bp)
-                .insertAfter($('._user-profile-card'))
-                .hide().fadeIn()
+        if (query.id) {
+            bp.append(phButtonOpenWorks)
+        } else if (query.mode && query.illust_id) {
+            bp.append(phButtonDownload)
+            bp.append(phDownloadProgress().hide())
         }
+
+        panel
+            .append(bp)
+            .insertAfter($('._user-profile-card'))
+            .hide().fadeIn()
+    }
 })
 
 function phPan() {
@@ -91,11 +91,11 @@ function runDownload() {
         sendLinksToBackgroundProcess(action, links)
     } else if ($('._work.multiple').length != 0) {
         let url = $('._work.multiple').attr('href')
-        $.get(url, data => {
+        $.get(url).done(function(data) {
             let total = $('.item-container', data).length
             $('.item-container', data).each(function(index) {
-                let url = $(this).find('a').first().attr('href')
-                $.get(url, function(data) {
+                let url2 = $(this).find('a').first().attr('href')
+                $.get(url2).done(function(data) {
                     let img = $(data).filter('img')[0]
                     let src = $(img).attr('src')
                     links.push(src)
