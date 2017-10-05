@@ -1,25 +1,25 @@
 console.info('PixivHelper running...')
 
 $(document).ready(() => {
-    let uri = URI(window.location)
-    let qs = uri.search(true)
-    let p = phPan().append(phTitle)
+    let uri = URI(window.location),
+        query = uri.search(true),
 
-    if (uri.path().indexOf('member_illust') != -1) {
-        let bp = phButtonPan()
+        if (uri.path().indexOf('member_illust') != -1) {
+            let panel = phPan().append(phTitle),
+                bp = phButtonPan()
 
-        if (qs.id) {
-            bp.append(phButtonOpenWorks)
-        } else if (qs.mode && qs.illust_id) {
-            bp.append(phButtonDownload)
-            bp.append(phDownloadProgress().hide())
+            if (query.id) {
+                bp.append(phButtonOpenWorks)
+            } else if (query.mode && query.illust_id) {
+                bp.append(phButtonDownload)
+                bp.append(phDownloadProgress().hide())
+            }
+
+            panel
+                .append(bp)
+                .insertAfter($('._user-profile-card'))
+                .hide().fadeIn()
         }
-
-        p
-            .append(bp)
-            .insertAfter($('._user-profile-card'))
-            .hide().fadeIn()
-    }
 })
 
 function phPan() {
@@ -42,9 +42,7 @@ function phDownloadProgress() {
     return $('<div/>')
         .attr('id', 'phi-download-progress')
         .addClass('cssload-squeeze')
-        .append($('<span/>')).append($('<span/>'))
-        .append($('<span/>')).append($('<span/>'))
-        .append($('<span/>'))
+        .append($('<span/>'), $('<span/>'), $('<span/>'), $('<span/>'), $('<span/>'))
 }
 
 function phButtonDownload() {
@@ -53,8 +51,7 @@ function phButtonDownload() {
         .addClass('follow-button js-follow-button')
         .text('Download')
         .click(() => {
-            processingDownload()
-            downloadWorker()
+            runDownload()
         })
 }
 
@@ -63,22 +60,30 @@ function phButtonOpenWorks() {
         .addClass('follow-button js-follow-button')
         .text('Open works')
         .click(() => {
-            let action = 'openTabs'
-            let links = []
-            $($('.image-item').get().reverse())
-                .each((index, item) => {
-                    let arr = $('a', $(item))
-                    let a = $(arr)[arr.length - 1]
-                    let href = $(a).attr('href')
-                    links.push(href)
-                })
-            chrome.runtime.sendMessage({ action, links })
+            runOpenWorks()
         })
 }
 
-function downloadWorker() {
+function runOpenWorks() {
+    let action = 'openTabs'
+    let links = []
+
+    $($('.image-item').get().reverse())
+        .each((index, item) => {
+            let arr = $('a', $(item))
+            let a = $(arr)[arr.length - 1]
+            let href = $(a).attr('href')
+            links.push(href)
+        })
+
+    chrome.runtime.sendMessage({ action, links })
+}
+
+function runDownload() {
     let action = 'download'
     let links = []
+
+    processingDownload()
 
     if ($('.original-image').length != 0) {
         let src = $('.original-image').attr('data-src')
@@ -108,7 +113,7 @@ function downloadWorker() {
 
 function sendLinksToBackgroundProcess(action, links) {
     chrome.runtime.sendMessage({ action, links }, function(res) {
-        console.log(res)
+        // console.log(res)
         let status = res.status
         if (status == 'done') {
             processingDownload()
