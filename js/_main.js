@@ -73,7 +73,7 @@ function runOpenWorks() {
             let arr = $('a', $(item))
             let a = $(arr)[arr.length - 1]
             let href = $(a).attr('href')
-            links.push(href)
+            links.push('https://www.pixiv.net' + href)
         })
 
     chrome.runtime.sendMessage({ action, links })

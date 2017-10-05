@@ -25,7 +25,6 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
     if (message.action == 'openTabs') {
         links.forEach(link => {
-            link = 'https://www.pixiv.net' + link
             chrome.tabs.create({ url: link, active: false })
         })
     }
