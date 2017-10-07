@@ -83,12 +83,12 @@ function runDownload() {
     let action = 'download'
     let links = []
 
-    processingDownload()
+    refreshDownloadUI()
 
     if ($('.original-image').length != 0) {
         let src = $('.original-image').attr('data-src')
         links.push(src)
-        sendLinksToBackgroundProcess(action, links)
+        processingDownload(links)
     } else if ($('._work.multiple').length != 0) {
         let url = $('._work.multiple').attr('href')
         $.get(url).done(function(data) {
@@ -100,7 +100,7 @@ function runDownload() {
                     let src = $(img).attr('src')
                     links.push(src)
                     if (links.length == total) {
-                        sendLinksToBackgroundProcess(action, links)
+                        processingDownload(links)
                     }
                 })
             })
@@ -111,17 +111,25 @@ function runDownload() {
     }
 }
 
-function sendLinksToBackgroundProcess(action, links) {
-    chrome.runtime.sendMessage({ action, links }, function(res) {
-        // console.log(res)
-        let status = res.status
-        if (status == 'done') {
-            processingDownload()
-        }
+function processingDownload(links) {
+    let total = links.length,
+        count = 0
+
+    console.log(links)
+
+    links.forEach(link => {
+        downloadPromise(link)
+            .then(() => { count++ })
+            .catch(() => { count++ })
+            .then(() => {
+                if (count == total) {
+                    refreshDownloadUI()
+                }
+            })
     })
 }
 
-function processingDownload() {
+function refreshDownloadUI() {
     $('#phi-download').toggle()
     $('#phi-download-progress').toggle()
 }

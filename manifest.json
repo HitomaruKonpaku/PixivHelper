@@ -45,6 +45,8 @@
         ],
         "js": [
             "js/jquery.min.js",
+            "js/download.min.js",
+            "js/downloadpromise.js",
             "js/URI.min.js",
             "js/_main.js"
         ]
