@@ -47,6 +47,7 @@
     ],
     "permissions": [
         "declarativeContent",
+        "activeTab",
         "tabs",
         "*://*.pixiv.net/*",
         "*://*.pximg.net/*"
