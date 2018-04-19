@@ -1,0 +1,13 @@
+<div class="ph-title">Pixiv Helper</div>
+
+<div class="ph-button _follow-buttons">
+    <v-btn class="follow-button js-follow-button" @click="openWorks" v-if="showOpenWorks" :loading="downloading" :disabled="downloading">
+        Open works
+    </v-btn>
+</div>
+
+<div class="ph-button _follow-buttons">
+    <v-btn class="follow-button js-follow-button" @click="downloadWork" v-if="showDownload" :loading="downloading" :disabled="downloading">
+        Download
+    </v-btn>
+</div>
