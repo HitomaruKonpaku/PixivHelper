@@ -6,7 +6,7 @@ $(document).ready(() => {
     ]
     hide.forEach(v => { setTimeout(() => { $(v).remove() }, 1000) })
 
-    setTimeout(start(), 1000)
+    setTimeout(start(), 500)
 })
 
 function start() {
@@ -64,27 +64,38 @@ function start() {
                         const task = 'download'
                         let links = []
 
-                        if ($('.original-image').length != 0) {
-                            let src = $('.original-image').attr('data-src')
+                        const e1 = '._1-h8Se6.r_Q2Jin'
+                        if ($(e1).length != 0) {
+                            const src = $(e1).attr('href')
                             links.push(src)
                             processingDownload(links)
-                        } else if ($('._work.multiple').length != 0) {
-                            let url = $('._work.multiple').attr('href')
-                            $.get(url).done(function (data) {
-                                let total = $('.item-container', data).length
-                                $('.item-container', data).each(function (index) {
-                                    let url2 = $(this).find('a').first().attr('href')
-                                    $.get(url2).done(function (data) {
-                                        let img = $(data).filter('img')[0]
-                                        let src = $(img).attr('src')
-                                        links.push(src)
-                                        if (links.length == total) {
-                                            processingDownload(links)
-                                        }
-                                    })
-                                })
-                            })
+                        } else {
+                            alert('Not supported!')
+                            app.downloading = false
+                            return
                         }
+
+                        // if ($('.original-image').length != 0) {
+                        //     let src = $('.original-image').attr('data-src')
+                        //     links.push(src)
+                        //     processingDownload(links)
+                        // } else if ($('._work.multiple').length != 0) {
+                        //     let url = $('._work.multiple').attr('href')
+                        //     $.get(url).done(function (data) {
+                        //         let total = $('.item-container', data).length
+                        //         $('.item-container', data).each(function (index) {
+                        //             let url2 = $(this).find('a').first().attr('href')
+                        //             $.get(url2).done(function (data) {
+                        //                 let img = $(data).filter('img')[0]
+                        //                 let src = $(img).attr('src')
+                        //                 links.push(src)
+                        //                 if (links.length == total) {
+                        //                     processingDownload(links)
+                        //                 }
+                        //             })
+                        //         })
+                        //     })
+                        // }
 
                         function processingDownload(params) {
                             const total = links.length
