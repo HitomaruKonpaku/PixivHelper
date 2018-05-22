@@ -10,6 +10,7 @@
   }
 
   #pixiv-helper .ph-button .btn {
+      background: #009CFF;
       text-transform: unset;
       font-weight: bold;
   }

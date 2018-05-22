@@ -1,14 +1,22 @@
 $(document).ready(() => {
     console.log('Pixiv Helper running!')
 
-    const appID = 'pixiv-helper'
+    const hide = [
+        '._3M6FtEB',
+    ]
+    hide.forEach(v => { setTimeout(() => { $(v).remove() }, 1000) })
 
+    setTimeout(start(), 1000)
+})
+
+function start() {
+    const appID = 'pixiv-helper'
     const html = $('<div>')
         .attr('id', appID)
         .addClass('_user-profile-card-badges')
         .load(chrome.runtime.getURL('html/pixiv.html'))
 
-    $('._user-profile-card')
+    $('._user-profile-card, ._3q5XQJU')
         .after(html)
         .ready(() => {
             let pathname = window.location.pathname
@@ -101,4 +109,4 @@ $(document).ready(() => {
                 },
             })
         })
-})
+}
