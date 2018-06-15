@@ -6,7 +6,22 @@ $(document).ready(() => {
     ]
     hide.forEach(v => { setTimeout(() => { $(v).remove() }, 1000) })
 
-    setTimeout(start(), 500)
+    let pathname = window.location.pathname
+    let search = window.location.search
+    let check = pathname.indexOf('member_illust') != -1 &&
+        ['id'].every(v => RegExp(`[?&]${v}\=`).test(search))
+
+    if (check) {
+        setTimeout(() => { start() }, 500)
+    } else {
+        let timer = setTimeout(() => {
+            const count = $('div[role=presentation]>div[role=presentation]').length
+            if (count != 0) {
+                start()
+                clearInterval(timer)
+            }
+        }, 100)
+    }
 })
 
 function start() {
