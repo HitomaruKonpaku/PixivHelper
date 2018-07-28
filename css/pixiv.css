@@ -11,6 +11,7 @@
 
   #pixiv-helper .ph-button .btn {
       background: #009CFF;
+      color:  #FFF;
       text-transform: unset;
       font-weight: bold;
   }
