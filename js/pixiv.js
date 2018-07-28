@@ -31,7 +31,10 @@ function start() {
         .addClass('_user-profile-card-badges')
         .load(chrome.runtime.getURL('html/pixiv.html'))
 
-    $('._user-profile-card, ._3q5XQJU')
+    const sourcePanel = $('._user-profile-card, ._3q5XQJU, ._1141Fg9')
+    console.log(sourcePanel)
+
+    sourcePanel
         .after(html)
         .ready(() => {
             let pathname = window.location.pathname
