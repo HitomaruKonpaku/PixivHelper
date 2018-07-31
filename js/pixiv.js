@@ -31,7 +31,7 @@ function start() {
         .addClass('_user-profile-card-badges')
         .load(chrome.runtime.getURL('html/pixiv.html'))
 
-    const sourcePanel = $('._user-profile-card, ._3q5XQJU, ._1141Fg9')
+    const sourcePanel = $('._user-profile-card, #root>div>div>div>aside>section>div:nth-child(2)')
     console.log(sourcePanel)
 
     sourcePanel
