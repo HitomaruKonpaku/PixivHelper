@@ -11,18 +11,18 @@ $(document).ready(() => {
     let check = pathname.indexOf('member_illust') != -1 &&
         ['id'].every(v => RegExp(`[?&]${v}\=`).test(search))
 
-    if (check) {
-        setTimeout(() => { start() }, 500)
-    } else {
-        let timer = setTimeout(() => {
-            const count = $('div[role=presentation]>div[role=presentation]').length
-            if (count != 0) {
-                start()
-                clearInterval(timer)
-            }
-        }, 100)
-    }
+    let timer = setTimeout(() => {
+        const count = getSourcePanel().length
+        if (count != 0) {
+            start()
+            clearInterval(timer)
+        }
+    }, 100)
 })
+
+function getSourcePanel() {
+    return $('._user-profile-card, #root>div>div>div>aside>section>div:nth-child(2)')
+}
 
 function start() {
     const appID = 'pixiv-helper'
@@ -31,7 +31,7 @@ function start() {
         .addClass('_user-profile-card-badges')
         .load(chrome.runtime.getURL('html/pixiv.html'))
 
-    const sourcePanel = $('._user-profile-card, #root>div>div>div>aside>section>div:nth-child(2)')
+    const sourcePanel = getSourcePanel()
     console.log(sourcePanel)
 
     sourcePanel
